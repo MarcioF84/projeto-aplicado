@@ -1,0 +1,369 @@
+/* CSS RESET E BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f3f4f6;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    color: #333;
+}
+
+/* MENU LATERAL (SIDEBAR) */
+nav {
+    width: 260px;
+    background-color: #1e293b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+    position: relative;
+    z-index: 100;
+}
+
+.nav-header {
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-bottom: 1px solid #334155;
+}
+
+nav ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+nav button {
+    width: 100%;
+    border: none;
+    background: none;
+    color: white;
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+nav button:hover {
+    background-color: #334155;
+}
+
+nav button i,
+nav button svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ÁREA PRINCIPAL */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+header {
+    background: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* CONTEÚDO */
+.content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hidden {
+    display: none;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    /* leve azul escuro igual sidebar */
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    min-width: 280px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    animation: fadeInScale 0.2s ease;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* animação suave */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* PÁGINA DE LOGIN */
+#page-form-login h3 {
+    margin-bottom: 20px;
+    ;
+}
+
+#page-form-login .btn-cadastro {
+    width: 100%;
+    padding-top: 50px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* FORMULÁRIO */
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+input:focus {
+    border-color: #2563eb;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    color: #787878;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2364748b' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%2364748b' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+select:valid {
+    color: #000000;
+}
+
+select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+select:disabled {
+    background-color: #f1f5f9;
+    cursor: not-allowed;
+}
+
+.btn-save {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-add {
+    width: auto;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 6px 8px;
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* TABELA */
+.table-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f8fafc;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #edf2f7;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.btn-action {
+    width: 100%;
+    border: none;
+    background: none;
+    color: #333;
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-action i,
+.btn-action svg {
+    width: 18px;
+    height: 18px;
+}
+
+.table-container ul {
+    list-style: none;
+}
+
+.table-container ul button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    float: left;
+    margin-right: 10px;
+}
+
+/* RESPONSIVIDADE (CELULAR) */
+@media (max-width: 768px) {
+    nav {
+        position: fixed;
+        left: -260px;
+        height: 100%;
+    }
+
+    nav.open {
+        left: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 90;
+    }
+
+    .overlay.active {
+        display: block;
+    }
+}
