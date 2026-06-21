@@ -15,16 +15,17 @@ class Endereco_Control extends Control
         parent::__construct($post_request, $this->endereco_dao);
     }
 
-    public function Endereco_Gerencia($id_endereco = null)
+    public function Endereco_Gerencia($busca = null)
     {
         try {
+            
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_endereco = 'A'";
             if (isset($this->post_request['id_endereco'])) {
-                $condicao = "and id_endereco = " . $this->post_request['id_endereco'] . "";
+                $condicao .= "and id_endereco = " . $this->post_request['id_endereco'] . "";
             }
-            if ($id_endereco != null) {
-                $condicao = "and id_endereco = " . $id_endereco . "";
+            if ($busca != null) {
+                $condicao .= $busca;
             }
 
             //INICIALIZA A PÁGINA		

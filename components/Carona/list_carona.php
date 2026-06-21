@@ -6,6 +6,7 @@
             <th>Data</th>
             <th>Hora</th>
             <th>Endereço</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody id="carona-data-table">

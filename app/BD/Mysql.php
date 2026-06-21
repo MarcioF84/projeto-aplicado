@@ -21,11 +21,10 @@ class Mysql
 
     public function __construct()
     {
-
-        $servidor_bd = "localhost"; // IP do Servidor do banco de dados.                    
-        $nome_bd = ""; // Nome da Base do banco de dados.
-        $usuario_bd = "root"; // Nome do usuário para conectar no banco de dados.
-        $senha_bd = "rootpass"; // Senha do usuário para conectar no banco de dados.
+        $servidor_bd = "estudosmf.mysql.dbaas.com.br"; // IP do Servidor do banco de dados.                    
+        $nome_bd = "estudosmf"; // Nome da Base do banco de dados.
+        $usuario_bd = "estudosmf"; // Nome do usuário para conectar no banco de dados.
+        $senha_bd = "DBmf1012!@#"; // Senha do usuário para conectar no banco de dados.
 
         $this->con = mysqli_connect($servidor_bd, $usuario_bd, $senha_bd);
         mysqli_select_db($this->con, $nome_bd) or die("Could not select db: " . mysqli_error($this->con));

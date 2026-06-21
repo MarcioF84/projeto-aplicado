@@ -1,6 +1,15 @@
 <form id="form-carona-add" onsubmit="Carona.saveNewData(event)">
-
-    <label>Endereço Origem</label>
+    <div class="form-group">
+        <label>Origem</label>
+        <select id="origem_endereco" onchange="trocarOrigem(this.value)">
+            <option value="" selected>Seleciona a Origem</option>
+            <option value="1">Campus</option>
+            <option value="2">Endereço</option>
+        </select>
+        <input type="hidden" id="id_endereco_origem" value="0">
+        <input type="hidden" id="id_endereco_destino" value="0">
+    </div>
+    <label id="label-endereco">Preencha o Endereço de Destino</label>
     <br>
     <div class="form-group">
         <label>CEP</label>
@@ -24,6 +33,7 @@
             <input type="text" id="estado" required placeholder="Estado">
         </div>
     </div>
+
     <br>
     <label>Data e Hora</label>
     <br>

@@ -87,7 +87,10 @@ const pagesConfig = {
             renderTable({
                 entidade: 'Carona',
                 tabelaId: 'carona-search-data-table',
-                colunas: ['id_carona', 'motorista', 'data_partida', 'hora_partida', 'endereco']
+                colunas: ['id_carona', 'motorista', 'data_partida', 'hora_partida', 'endereco'],
+                actions: [
+                    { label: '✏️', title: 'Solicitar Carona', onClick: Carona.solicitarCarona }
+                ]
             });
         }
     },
@@ -148,7 +151,7 @@ function toggleMenu() {
 }
 
 function navigate(page) {
-    console.log(page);
+
     const current = document.getElementById(page);
     const title = document.getElementById('page-title');
 
@@ -490,3 +493,19 @@ function pesquisacep(valor) {
         }
     }
 }
+
+function trocarOrigem(v) {
+
+    document.getElementById('id_endereco_origem').value = 0;
+    document.getElementById('id_endereco_destino').value = 0;
+
+    const label = document.getElementById("label-endereco");
+    if (v == 2) {
+        document.getElementById('id_endereco_destino').value = 3;
+        label.textContent = "Preencha o Endereço de Origem";
+    } else {
+        document.getElementById('id_endereco_origem').value = 3;
+        label.textContent = "Preencha o Endereço de Destino";
+    }
+}
+

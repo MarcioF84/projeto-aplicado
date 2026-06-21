@@ -25,7 +25,7 @@ window.Carona = {
         });
 
         return errors;
-    },
+    },    
 
     async saveNewData(event) {
         event.preventDefault();
@@ -54,6 +54,8 @@ window.Carona = {
                 ac: btoa('Carona_Add'),
 
                 id_frota: document.getElementById('id_frota').value,
+                id_endereco_origem: document.getElementById('id_endereco_origem').value,
+                id_endereco_origem: document.getElementById('id_endereco_origem').value,
                 data_partida: document.getElementById('data_partida').value,
                 hora_partida: document.getElementById('hora_partida').value,
                 valor_carona: document.getElementById('valor_carona').value,
@@ -150,7 +152,9 @@ window.Carona = {
             }, 2000);
         }
     },
+    async solicitarCarona(co, ac, id, colunas, tabelaId) {
 
+    },
     async removeData(co, ac, id, colunas, tabelaId) {
 
         try {

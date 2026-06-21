@@ -18,7 +18,6 @@ class Carona_Control extends Control
         $this->frota_control = new Frota_Control($post_request);
 
         parent::__construct($post_request, $this->carona_dao);
-        
     }
 
     public function Carona_Gerencia()
@@ -51,8 +50,10 @@ class Carona_Control extends Control
 
 
             $dataArray = array_map(function ($u)  use ($objEndereco) {
-                $endereco = $objEndereco['data'][0]['cep']." - ".$objEndereco['data'][0]['rua']." - ". $objEndereco['data'][0]['cidade']." / ". $objEndereco['data'][0]['estado'];
-                $item = $u->to_array();      
+                $endereco = $objEndereco['data'][0]['cep'] . " - " . $objEndereco['data'][0]['rua'] . " - 
+                " . $objEndereco['data'][0]['cidade'] . " / 
+                " . $objEndereco['data'][0]['estado'];
+                $item = $u->to_array();
                 $item['endereco'] = $endereco ?? null;
                 return $item;
             }, $objetos);
@@ -78,15 +79,24 @@ class Carona_Control extends Control
     public function Carona_Add()
     {
         try {
+            $id_endereco_origem = $this->post_request['id_endereco_origem'];
+            $id_endereco_destino = $this->post_request['id_endereco_destino'];
 
-            
-            $result = $this->endereco_control->Endereco_Add();
+            $result = $this->endereco_control->Endereco_Gerencia(" and cep = '" . $this->post_request['cep'] . "'");
+            if (!$result['data']) {
+                $result = $this->endereco_control->Endereco_Add();
+                $id_endereco = $result['id_endereco'];
+            } else {
+                $id_endereco = $result['data'][0]['id_endereco'];
+            }
+
+            ($id_endereco_origem == 0) ? $id_endereco_origem = $id_endereco : $id_endereco_destino = $id_endereco;
 
             $obj = new Carona();
 
             $obj->set_id_frota($this->post_request['id_frota']);
-            $obj->set_id_endereco_origem($result['id_endereco']);
-            $obj->set_id_endereco_destino($result['id_endereco']);
+            $obj->set_id_endereco_origem($id_endereco_origem);
+            $obj->set_id_endereco_destino($id_endereco_destino);
             $obj->set_data_partida($this->data->get_formatData($this->post_request['data_partida'], 'BD'));
             $obj->set_hora_partida($this->post_request['hora_partida']);
             $obj->set_valor_carona($this->post_request['valor_carona']);

@@ -71,6 +71,16 @@ CREATE TABLE tb_usuario_frota (
 		ON DELETE CASCADE 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE tb_campus (
+	id_campus BIGINT UNSIGNED NOT NULL,	
+	id_endereco BIGINT UNSIGNED NOT NULL,	
+    nome_campus VARCHAR(150) NOT NULL, 
+  	status_campus CHAR(1) DEFAULT 'A' COMMENT 'A - Ativo, D - Desativado',  	
+	PRIMARY KEY (id_campus)
+	INDEX idx_endereco (id_endereco),  	
+	CONSTRAINT fk_endereco_campus FOREIGN KEY (id_endereco) REFERENCES tb_endereco (id_endereco) ON DELETE RESTRICT,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE tb_endereco (
 	id_endereco BIGINT UNSIGNED NOT NULL,	
     cep VARCHAR(8) NOT NULL, 
