@@ -15,7 +15,7 @@
     <nav id="sidebar">
         <div class="nav-header">Meu App</div>
         <ul>
-            <li><button onclick="navigate('home')"><i data-lucide="home"></i> Início</button></li>                       
+            <li><button onclick="navigate('home')"><i data-lucide="home"></i> Início</button></li>
             <li><button onclick="navigate('usuario-list')"><i data-lucide="table"></i> Usuários</button></li>
             <li><button onclick="navigate('tipo-usuario-list')"><i data-lucide="table"></i> Tipo de Usuário</button></li>
             <li><button onclick="navigate('marca-list')"><i data-lucide="table"></i> Marcas</button></li>
@@ -59,7 +59,7 @@
             <div id="carona-add" class="card page hidden"></div>
             <div id="carona-alt" class="card page hidden"></div>
 
-            
+
             <div id="modal" class="modal hidden">
                 <div class="modal-content">
                     <p id="modal-message">Salvando...</p>
@@ -70,8 +70,8 @@
     <script src="assets/js/lucide.min.js"></script>
     <script src="assets/js/site.js" defer></script>
     <script>
-        window.onload = function () {
-            loadPage('home', 'components/home.php');
+        window.onload = function() {
+            navigator('home');
             lucide.createIcons();
         };
     </script>

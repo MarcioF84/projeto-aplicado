@@ -14,6 +14,7 @@ try {
     $input = [];
 
     switch ($httpMethod) {
+
         case 'POST':
             if (str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
                 $input = json_decode(file_get_contents("php://input"), true);
@@ -21,8 +22,10 @@ try {
                     throw new Exception("JSON inválido");
                 }
             } else {
-                $input = $_POST;
+                // multipart/form-data
+                $input = array_merge($_POST, $_FILES);
             }
+            
             break;
 
         case 'GET':
@@ -69,14 +72,13 @@ try {
     }
 
     // Executa método e passa dados
-    $result = $controller->$action();    
+    $result = $controller->$action();
 
     // Retorno padrão
     echo json_encode([
         'success' => true,
         'data' => $result
     ], JSON_UNESCAPED_UNICODE);
-
 } catch (Exception $e) {
 
     http_response_code(400);

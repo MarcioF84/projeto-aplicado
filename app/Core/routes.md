@@ -63,6 +63,19 @@ Usuario_Alt              -> VXN1YXJpb19BbHQ=
 Usuario_Desativar        -> VXN1YXJpb19EZXNhdGl2YXI=
 Usuario_Ativar           -> VXN1YXJpb19BdGl2YXI=
 
+Anexo_Control            -> QW5leG9fQ29udHJvbA==
+Anexo_Gerencia           -> QW5leG9fR2VyZW5jaWE=
+Anexo_Add                -> QW5leG9fQWRk
+Anexo_Alt                -> QW5leG9fQWx0
+Anexo_Desativar          -> QW5leG9fRGVzYXRpdmFy
+Anexo_Ativar             -> QW5leG9fQXRpdmFy
+
+TipoAnexo_Control        -> VGlwb0FuZXhvX0NvbnRyb2w=
+TipoAnexo_Gerencia       -> VGlwb0FuZXhvX0dlcmVuY2lh
+TipoAnexo_Add            -> VGlwb0FuZXhvX0FkZA==
+TipoAnexo_Alt            -> VGlwb0FuZXhvX0FsdA==
+TipoAnexo_Desativar      -> VGlwb0FuZXhvX0Rlc2F0aXZhcg==
+TipoAnexo_Ativar         -> VGlwb0FuZXhvX0F0aXZhcg==
 
 
 

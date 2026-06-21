@@ -5,12 +5,22 @@ const pagesConfig = {
     },
     'login': {
         title: 'Login',
-        onLoad: () => { loadPage('login', 'form_login.php') }
+        onLoad: () => { loadPage('login', 'components/login.php') }
     },
+
+
     // USUARIOS
     'usuario-add': {
         title: 'Novo Cadastro',
         onLoad: () => { loadPage('usuario-add', 'components/Usuario/form_add_user.php', 'components/Usuario/user.js') }
+    },
+    'usuario-doc-add': {
+        title: 'Documentos',
+        onLoad: () => { loadPage('usuario-doc-add', 'components/Usuario/form_add_doc_user.php', 'components/Usuario/user.js') }
+    },
+    'usuario-add-conclui': {
+        title: 'Cadastro Concluído',
+        onLoad: () => { loadPage('usuario-add-conclui', 'components/Usuario/form_add_conclui_user.php', 'components/Usuario/user.js') }
     },
     'usuario-alt': {
         title: 'Atualizar Cadastro',
@@ -31,6 +41,8 @@ const pagesConfig = {
             });
         }
     },
+
+
     // TIPO DE USUÁRIOS
     'tipo-usuario-add': {
         title: 'Novo Cadastro',
@@ -55,6 +67,7 @@ const pagesConfig = {
             });
         }
     },
+
 
     // CARONA
     'carona-add': {
@@ -119,6 +132,8 @@ const pagesConfig = {
             });
         }
     },
+
+
     // MODELOS
     'modelo-add': {
         title: 'Novo Cadastro',
@@ -152,19 +167,15 @@ function toggleMenu() {
 
 function navigate(page) {
 
-    const current = document.getElementById(page);
-    const title = document.getElementById('page-title');
-
     document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
 
-    if (current) {
-        current.classList.remove('hidden');
-    }
+    const current = document.getElementById(page);
+    if (current) current.classList.remove('hidden');
 
-    // if (window.innerWidth <= 768) toggleMenu();
     const config = pagesConfig[page] || { title: 'Início' };
-    title.innerText = config.title;
-
+    const title = document.getElementById('page-title');
+    if (title) title.innerText = config.title;
+    
     if (config.onLoad) {
         config.onLoad();
     }

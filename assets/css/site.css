@@ -173,12 +173,12 @@ header {
 }
 
 /* PÁGINA DE LOGIN */
-#page-form-login h3 {
+#login h3 {
     margin-bottom: 20px;
     ;
 }
 
-#page-form-login .btn-cadastro {
+#login .btn-cadastro {
     width: 100%;
     padding-top: 50px;
     border: none;
@@ -366,4 +366,43 @@ td {
     .overlay.active {
         display: block;
     }
+}
+
+/*PAGINA DE UPLOAD DE DOCUMENTOS*/
+.upload-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    background: #f9fbff;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-box:hover {
+    background: #f0f7ff;
+    border-color: #1e88ff;
+}
+
+.upload-box input[type="file"] {
+    display: none;
+}
+
+.upload-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #7a7a7a;
+}
+
+.upload-content i {
+    width: 38px;
+    height: 38px;
+    stroke-width: 1.5;
+    color: #000;
 }

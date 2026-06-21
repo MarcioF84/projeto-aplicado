@@ -1,6 +1,6 @@
-<form onsubmit="saveData(event)">
+<h3>Faça seu login:</h3>
 
-    <h3>Faça seu login:</h3>
+<form onsubmit="saveData(event)">
 
     <div class="form-group">
         <label>Usuário</label>
@@ -14,8 +14,7 @@
     <button type="submit" class="btn-save">Entrar</button>
 
 </form>
+<i data-lucide="table"></i>
 
-<button class="btn-cadastro" onclick="navigate('page-form-add-user')">Não tem Cadastro?</button>
-
-
+<button class="btn-cadastro" onclick="navigate('usuario-add')">Não tem Cadastro?</button>
 

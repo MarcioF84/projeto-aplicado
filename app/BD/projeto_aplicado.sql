@@ -16,6 +16,29 @@ CREATE TABLE tb_usuario (
   	CONSTRAINT fk_usuario_tipo FOREIGN KEY (id_tipo_usuario) REFERENCES tb_tipo_usuario (id_tipo_usuario)  	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE tb_tipo_anexo (
+	id_tipo_anexo INT UNSIGNED NOT NULL,
+	descricao_tipo_anexo VARCHAR(255) NOT NULL,
+  	status_tipo_anexo CHAR(1) DEFAULT 'A' COMMENT 'A - Ativo, D - Desativado',  	
+	PRIMARY KEY (id_tipo_anexo),  
+  	UNIQUE KEY uk_tipo_anexo_descricao (descricao_tipo_anexo)    	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE tb_anexo (
+  id_anexo BIGINT UNSIGNED NOT NULL,
+  id_tipo_anexo INT UNSIGNED NOT NULL,  
+  id_usuario BIGINT UNSIGNED NOT NULL,
+  data_upload timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  arquivo_nome char(100) DEFAULT NULL,
+  arquivoextensao char(5) DEFAULT NULL,
+  status_anexo CHAR(1) DEFAULT 'A' COMMENT 'A - Ativo, D - Desativado', 
+  PRIMARY KEY (id_anexo),
+  INDEX idx_tipo_anexo (id_tipo_anexo), 
+  INDEX idx_usuario_anexo (id_usuario), 
+  CONSTRAINT fk_tipo_anexo_tipo FOREIGN KEY (id_tipo_anexo) REFERENCES tb_tipo_anexo (id_tipo_anexo) ON DELETE CASCADE,
+  CONSTRAINT fk_usuario_anexo_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_usuario) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE tb_tipo_usuario (
 	id_tipo_usuario INT UNSIGNED NOT NULL,
 	descricao_tipo VARCHAR(255) NOT NULL,
@@ -142,4 +165,3 @@ CREATE TABLE tb_avaliacao (
     CONSTRAINT fk_avaliacao_carona FOREIGN KEY (id_carona) REFERENCES tb_carona (id_carona) ON DELETE CASCADE,
     CHECK (pontuacao BETWEEN 1 AND 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
