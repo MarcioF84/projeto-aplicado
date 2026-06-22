@@ -19,6 +19,7 @@
             <!-- Página Usuários -->
             <div id="usuario-add" class="card page hidden"></div>
             <div id="usuario-doc-add" class="card page hidden"></div>
+            <div id="usuario-frota-add" class="card page hidden"></div>
             <div id="usuario-add-conclui" class="card page hidden"></div>
 
             <div id="modal" class="modal hidden">

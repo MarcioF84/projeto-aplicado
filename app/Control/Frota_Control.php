@@ -8,12 +8,14 @@ class Frota_Control extends Control
 {
 
     private object $frota_dao;
+    private object $usuario_frota_dao;
     private object $modelo_control;
     private object $usuario_control;
 
     public function __construct(array $post_request)
     {
         $this->frota_dao = new Frota_DAO();
+        $this->usuario_frota_dao = new UsuarioFrota_DAO();
         $this->modelo_control = new Modelo_Control($post_request);
         $this->usuario_control = new Usuario_Control($post_request);
 
@@ -81,10 +83,17 @@ class Frota_Control extends Control
             $obj->set_id_modelo($this->post_request['id_modelo']);
             $obj->set_placa($this->post_request['placa']);
             $obj->set_cor($this->post_request['cor']);
-            $obj->set_data_criacao($this->post_request['data_criacao']);
             $obj->set_status_frota("A");
 
             $id_frota = $this->frota_dao->Save($obj);
+            
+            // VINCULA FROTA COM O USUÁRIO
+            $obj = new UsuarioFrota();
+            
+            $obj->set_id_usuario($this->post_request['id_usuario']);
+            $obj->set_id_frota($id_frota);
+
+            $this->usuario_frota_dao->Save($obj);
 
             return [
                 "message" => "Novo modelo cadastrado com sucesso",

@@ -35,9 +35,9 @@
 
             <!-- Página Usuários -->
             <div id="usuario-list" class="table-container page hidden"></div>
-            <div id="usuario-add" class="card page hidden"></div>
+            <div id="usuario-add" class="card page hidden"></div>            
             <div id="usuario-alt" class="card page hidden"></div>
-
+            
             <!-- Página Tipo de Usuários -->
             <div id="tipo-usuario-list" class="table-container page hidden"></div>
             <div id="tipo-usuario-add" class="card page hidden"></div>
@@ -75,8 +75,7 @@
     <script src="assets/js/site.js" defer></script>
     <script>
         window.onload = function() {
-            // navigate('home');
-            navigate('carona-reservada');
+            navigate('home');
             lucide.createIcons();
         };
     </script>

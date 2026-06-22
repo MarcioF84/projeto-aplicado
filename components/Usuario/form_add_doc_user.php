@@ -1,9 +1,10 @@
 <h3 id="page-title">Novo Cadastro</h3>
 <br>
 <form id="form-usuario-doc-add" onsubmit="Usuario.saveDocsData(event)">
-
+    <input type="hidden" id="id_tipo_usuario" value="">
+    
     <!-- CNH -->
-    <div class="form-group">
+    <div class="form-group" id="form-cnh">
         <label>Anexe sua CNH</label>
         <small>Caso pretenda oferecer caronas, anexe sua Carteira Nacional de Habilitação.</small>
 
@@ -18,7 +19,7 @@
     </div>
 
     <!-- Comprovante -->
-    <div class="form-group">
+    <div class="form-group" id="form-documento">
         <label>Anexe seu comprovante de vínculo</label>
         <small>Usaremos sua identidade para fins de segurança e verificação.</small>
 

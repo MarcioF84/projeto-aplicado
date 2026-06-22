@@ -54,6 +54,7 @@ window.Usuario = {
 
         try {
             showLoading('Salvando...');
+            const typeUser = document.getElementById('id_tipo_usuario').value;
 
             const payload = {
                 co: btoa('Usuario_Control'),
@@ -93,9 +94,17 @@ window.Usuario = {
             setTimeout(() => {
                 const el = document.getElementById('form-usuario-doc-add');
                 if (el) {
+                    if (typeUser == 2) {
+                        document.getElementById('form-cnh').classList.add('hidden');
+                        document.getElementById('form-documento').classList.add('hidden');
+                    } else {
+                        document.getElementById('form-cnh').classList.remove('hidden');
+                        document.getElementById('form-documento').classList.remove('hidden');                        
+                    }
                     el.dataset.id = res.data?.id_usuario;
+                    document.getElementById('id_tipo_usuario').value = typeUser;
                 }
-            }, 50);
+            }, 100);
 
             // Limpa formulário
             event.target.reset();
@@ -117,6 +126,8 @@ window.Usuario = {
 
             const form = document.getElementById('form-usuario-doc-add');
             const id_usuario = form?.dataset?.id;
+            
+            const id_tipo_usuario = document.getElementById('id_tipo_usuario').value;
 
             if (!id_usuario) {
                 showModalMessage('Usuário não identificado');
@@ -164,8 +175,19 @@ window.Usuario = {
             }
 
             showModalMessage('Documentos enviados com sucesso!');
-            
-            navigate('usuario-add-conclui');            
+
+            if (id_tipo_usuario == 2) {
+                navigate('usuario-add-conclui');
+            } else {
+                navigate('usuario-frota-add');
+
+                setTimeout(() => {
+                    const el = document.getElementById('form-usuario-frota-add');
+                    if (el) {
+                        el.dataset.id = id_usuario;
+                    }
+                }, 100);
+            }
 
         } catch (err) {
             showModalMessage('Erro inesperado ao enviar arquivos');
@@ -175,6 +197,67 @@ window.Usuario = {
             }, 2000);
         }
     },
+
+    async saveFrotaData(event) {
+        event.preventDefault();
+
+        const errors = this.validate([
+            { id: 'placa', label: 'Placa', required: true, max: 7 },
+            { id: 'cor', label: 'Cor', required: true, max: 100 },
+            { id: 'id_modelo', label: 'Modelo', required: true }
+        ]);
+
+        if (errors.length > 0) {
+            showModalMessage(errors.join('\n'));
+            return;
+        }
+
+        try {
+            showLoading('Salvando...');
+
+            const payload = {
+                co: btoa('Frota_Control'),
+                ac: btoa('Frota_Add'),
+
+                placa: document.getElementById('placa').value,
+                cor: document.getElementById('cor').value,
+                id_modelo: document.getElementById('id_modelo').value,
+            };
+
+            // Requisição
+            const response = await fetch('/app/Core/Router.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const res = await response.json();
+
+            if (!res.success) {
+                showModalMessage(res.error || 'Erro ao salvar');
+                return;
+            }
+
+            // Sucesso        
+            showModalMessage(res.data?.message || 'Salvo com sucesso!');
+
+            // guarda o ID para update
+            navigate('usuario-add-conclui');
+
+            // Limpa formulário
+            event.target.reset();
+
+        } catch (err) {
+            showModalMessage('Erro inesperado');
+        } finally {
+            setTimeout(() => {
+                hideLoading();
+            }, 2000);
+        }
+    },
+
 
     async saveChangeData(event) {
         event.preventDefault();

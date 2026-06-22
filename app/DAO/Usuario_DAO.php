@@ -19,7 +19,7 @@ class Usuario_DAO extends Generic_DAO
 
         $sql = "select U.*
                 from {$this->tabela} as U
-                join tb_usuario_frota as UF on UF.id_usuario = U.id_usuario
+                left join tb_usuario_frota as UF on UF.id_usuario = U.id_usuario
                 where 1 = 1 {$condicao}";  		
                 
         $result = $this->con->fetch_array($this->con->query($sql), MYSQLI_ASSOC);
@@ -29,7 +29,6 @@ class Usuario_DAO extends Generic_DAO
 
     public function get_descricoes(&$error)
     {
-
         $desc = array();
         return $desc;
     }

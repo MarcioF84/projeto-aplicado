@@ -20,6 +20,10 @@ const pagesConfig = {
         title: 'Documentos',
         onLoad: () => { loadPage('usuario-doc-add', 'components/Usuario/form_add_doc_user.php', 'components/Usuario/user.js') }
     },
+    'usuario-frota-add': {
+        title: 'Cadastro de Veículo',
+        onLoad: () => { loadPage('usuario-frota-add', 'components/Usuario/form_add_frota_user.php', 'components/Usuario/user.js') }
+    },
     'usuario-add-conclui': {
         title: 'Cadastro Concluído',
         onLoad: () => { loadPage('usuario-add-conclui', 'components/Usuario/form_add_conclui_user.php', 'components/Usuario/user.js') }
@@ -43,7 +47,6 @@ const pagesConfig = {
             });
         }
     },
-
 
     // TIPO DE USUÁRIOS
     'tipo-usuario-add': {
