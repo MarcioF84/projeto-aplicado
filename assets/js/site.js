@@ -111,10 +111,10 @@ const pagesConfig = {
             await loadPage('carona-search', 'components/Carona/search_carona.php', 'components/Carona/carona.js');
             renderTable({
                 entidade: 'Carona',
-                tabelaId: 'carona-detail-data',
+                tabelaId: 'carona-search-data-table',
                 colunas: ['id_carona', 'motorista', 'data_partida', 'hora_partida', 'endereco'],
                 actions: [
-                    { label: '✏️', title: 'Solicitar Carona', onClick: Carona.solicitarCarona }
+                    { label: '✏️', title: 'Solicitar Carona', onClick: Carona.solicitarCarona },
                 ]
             });
         }

@@ -55,7 +55,7 @@ window.Carona = {
 
                 id_frota: document.getElementById('id_frota').value,
                 id_endereco_origem: document.getElementById('id_endereco_origem').value,
-                id_endereco_origem: document.getElementById('id_endereco_origem').value,
+                id_endereco_destino: document.getElementById('id_endereco_destino').value,
                 data_partida: document.getElementById('data_partida').value,
                 hora_partida: document.getElementById('hora_partida').value,
                 valor_carona: document.getElementById('valor_carona').value,
@@ -245,6 +245,10 @@ window.Carona = {
                 hideLoading();
             }, 2000);
         }
+    },
+
+    async solicitarCarona(){
+        navigate('carona-detail');
     }
 }
 

@@ -106,12 +106,13 @@ class Carona_Control extends Control
 
             $obj = new Carona();
 
+            $valor_carona = str_replace(['R$', '.', ','], ['', '', '.'], trim($this->post_request['valor_carona']));
             $obj->set_id_frota($this->post_request['id_frota']);
             $obj->set_id_endereco_origem($id_endereco_origem);
             $obj->set_id_endereco_destino($id_endereco_destino);
             $obj->set_data_partida($this->data->get_formatData($this->post_request['data_partida'], 'BD'));
             $obj->set_hora_partida($this->post_request['hora_partida']);
-            $obj->set_valor_carona($this->post_request['valor_carona']);
+            $obj->set_valor_carona($valor_carona);
             $obj->set_qtde_assento($this->post_request['qtde_assento']);
             $obj->set_status_carona("A");
 

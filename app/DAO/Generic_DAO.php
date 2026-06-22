@@ -69,7 +69,7 @@ class Generic_DAO {
 
             $str_column = $campos[0] . $str_column;
 
-            $insert = "insert into {$this->tabela} ({$str_column}) values({$str_insert});";
+            $insert = "insert into {$this->tabela} ({$str_column}) values({$str_insert});";            
             $this->con->query($insert);
 
             return $id_new;

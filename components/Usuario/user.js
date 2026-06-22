@@ -242,6 +242,9 @@ window.Usuario = {
     async saveFrotaData(event) {
         event.preventDefault();
 
+        const form = document.getElementById('form-usuario-frota-add');
+        const id_usuario = form?.dataset?.id;
+
         const errors = this.validate([
             { id: 'placa', label: 'Placa', required: true, max: 7 },
             { id: 'cor', label: 'Cor', required: true, max: 100 },
@@ -263,6 +266,7 @@ window.Usuario = {
                 placa: document.getElementById('placa').value,
                 cor: document.getElementById('cor').value,
                 id_modelo: document.getElementById('id_modelo').value,
+                id_usuario: id_usuario
             };
 
             // Requisição
@@ -285,7 +289,7 @@ window.Usuario = {
             showModalMessage(res.data?.message || 'Salvo com sucesso!');
 
             // guarda o ID para update
-            // navigate('usuario-add-conclui');
+            navigate('usuario-add-conclui');
 
             // Limpa formulário
             event.target.reset();
