@@ -26,7 +26,7 @@ class Modelo_Control extends Control
             if ($busca != null) {
                 $condicao .= $busca;
             }
-            
+
             //INICIALIZA A PÁGINA		
             $pagina = isset($this->post_request['pagina']) && $this->post_request['pagina'] > 0 ? $this->post_request['pagina'] : 1;
 
@@ -43,11 +43,20 @@ class Modelo_Control extends Control
             $ordem = " descricao_modelo asc";
 
             $objetos = $this->modelo_dao->get_Objs($condicao, $ordem, $inicio, $pag_views);
-            $objMarca = $this->marca_control->Marca_Gerencia(" and id_marca = " . $objetos[0]->get_id_marca());
+
+            $objMarca = $this->marca_control->Marca_Gerencia();
 
             $dataArray = array_map(function ($u) use ($objMarca) {
                 $item = $u->to_array();
-                $item['marca'] = $objMarca['data'][0] ?? null;
+
+                $marca = null;
+                foreach ($objMarca['data'] as $m) {
+                    if ($m['id_marca'] == $item['id_marca']) {
+                        $marca = $m;
+                        break;
+                    }
+                }
+                $item['marca'] = $marca;
                 return $item;
             }, $objetos);
 

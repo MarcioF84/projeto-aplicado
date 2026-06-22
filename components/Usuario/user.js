@@ -34,6 +34,47 @@ window.Usuario = {
         return errors;
     },
 
+    async loadModelos() {
+        try {
+
+            const select = document.getElementById('id_modelo');
+            const co = btoa('Modelo_Control');
+            const ac = btoa('Modelo_Gerencia');
+
+            if (!select) return;
+
+            // limpa opções
+            select.innerHTML = '<option value="">Carregando...</option>';
+
+            const res = await fetch(`/app/Core/Router.php?co=${co}&ac=${ac}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await res.json();
+
+            select.innerHTML = '<option value="">Selecione</option>';
+
+            if (!data.success || !data.data.data?.length) {
+                select.innerHTML += '<option value="">Nenhum modelo encontrado</option>';
+                return;
+            }
+
+            data.data.data.forEach(modelo => {
+                const option = document.createElement('option');
+                option.value = modelo.id_modelo;
+                option.textContent = modelo.marca.descricao_marca + ' ' + modelo.descricao_modelo;
+
+                select.appendChild(option);
+            });
+
+        } catch (error) {
+            showModalMessage('Erro ao carregar modelos:', error);
+        }
+    },
+
     async saveNewData(event) {
         event.preventDefault();
 
@@ -99,7 +140,7 @@ window.Usuario = {
                         document.getElementById('form-documento').classList.add('hidden');
                     } else {
                         document.getElementById('form-cnh').classList.remove('hidden');
-                        document.getElementById('form-documento').classList.remove('hidden');                        
+                        document.getElementById('form-documento').classList.remove('hidden');
                     }
                     el.dataset.id = res.data?.id_usuario;
                     document.getElementById('id_tipo_usuario').value = typeUser;
@@ -126,7 +167,7 @@ window.Usuario = {
 
             const form = document.getElementById('form-usuario-doc-add');
             const id_usuario = form?.dataset?.id;
-            
+
             const id_tipo_usuario = document.getElementById('id_tipo_usuario').value;
 
             if (!id_usuario) {
@@ -244,7 +285,7 @@ window.Usuario = {
             showModalMessage(res.data?.message || 'Salvo com sucesso!');
 
             // guarda o ID para update
-            navigate('usuario-add-conclui');
+            // navigate('usuario-add-conclui');
 
             // Limpa formulário
             event.target.reset();

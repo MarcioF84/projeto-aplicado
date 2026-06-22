@@ -75,7 +75,7 @@
     <script src="assets/js/site.js" defer></script>
     <script>
         window.onload = function() {
-            navigate('home');
+            navigate('home');            
             lucide.createIcons();
         };
     </script>

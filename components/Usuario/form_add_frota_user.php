@@ -15,9 +15,7 @@
     <div class="form-group">
         <label>Modelo</label>
         <select id="id_modelo" required>
-            <option value="" selected>Selecione</option>
-            <option value="F">Feminino</option>
-            <option value="M">Masculino</option>
+            <option value="" selected>Selecione</option>            
         </select>
     </div>
 

@@ -22,7 +22,14 @@ const pagesConfig = {
     },
     'usuario-frota-add': {
         title: 'Cadastro de Veículo',
-        onLoad: () => { loadPage('usuario-frota-add', 'components/Usuario/form_add_frota_user.php', 'components/Usuario/user.js') }
+        onLoad: async () => {
+            await loadPage(
+                'usuario-frota-add',
+                'components/Usuario/form_add_frota_user.php',
+                'components/Usuario/user.js'
+            );
+            Usuario.loadModelos();
+        }
     },
     'usuario-add-conclui': {
         title: 'Cadastro Concluído',
@@ -636,6 +643,7 @@ function renderRideDetails({ entidade, caronaId = 1 }) {
         .catch(err => console.error('Erro na requisição:', err))
         .finally(() => hideLoading());
 }
+
 
 async function loadData(co, ac, id, colunas, tabelaId) {
 

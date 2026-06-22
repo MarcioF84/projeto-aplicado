@@ -15,13 +15,13 @@ class Marca_Control extends Control
         parent::__construct($post_request, $this->marca_dao);
     }
 
-    public function Marca_Gerencia()
+    public function Marca_Gerencia($busca = null)
     {
         try {
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_marca = 'A'";
-            if (isset($this->post_request['id_marca'])) {
-                $condicao = "and id_marca = " . $this->post_request['id_marca'] . "";
+            if ($busca != null) {
+                $condicao .= $busca;
             }
 
             //INICIALIZA A PÁGINA		
@@ -31,7 +31,7 @@ class Marca_Control extends Control
             $total_reg = $this->marca_dao->get_Total($condicao);
 
             //CONFIGURE O NUMERO DE REGISTROS POR PAGINA
-            $pag_views = 10;
+            $pag_views = 1000;
 
             //CALCULA OS PARAMETROS DE PAGINACAO
             $inicio = ($pagina - 1) * $pag_views;
