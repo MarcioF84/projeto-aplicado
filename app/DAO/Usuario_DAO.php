@@ -17,7 +17,7 @@ class Usuario_DAO extends Generic_DAO
 
     public function load_data($condicao) {
 
-        $sql = "select U.nome
+        $sql = "select U.*
                 from {$this->tabela} as U
                 join tb_usuario_frota as UF on UF.id_usuario = U.id_usuario
                 where 1 = 1 {$condicao}";  		

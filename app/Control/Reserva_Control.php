@@ -8,20 +8,25 @@ class Reserva_Control extends Control
 {
 
     private object $reserva_dao;
+    private object $carona_control;
 
     public function __construct(array $post_request)
     {
         $this->reserva_dao = new Reserva_DAO();
+        $this->carona_control = new Carona_Control($post_request);
         parent::__construct($post_request, $this->reserva_dao);
     }
 
-    public function Reserva_Gerencia()
+    public function Reserva_Gerencia($busca = null)
     {
         try {
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_reserva = 'A'";
-            if (isset($this->post_request['id_reserva'])) {
-                $condicao = "and id_reserva = " . $this->post_request['id_reserva'] . "";
+            if (isset($this->post_request['id_usuario']) && $this->post_request['id_usuario'] > 0) {
+                $condicao .= " and id_usuario = " . $this->post_request['id_usuario'];
+            }
+            if ($busca != null) {
+                $condicao .= $busca;
             }
 
             //INICIALIZA A PÁGINA		
@@ -40,9 +45,12 @@ class Reserva_Control extends Control
             $ordem = " id_reserva asc";
 
             $objetos = $this->reserva_dao->get_Objs($condicao, $ordem, $inicio, $pag_views);
+            $objCarona = $this->carona_control->Carona_Gerencia(" and id_carona = " . $objetos[0]->get_id_carona());
 
-            $dataArray = array_map(function ($u) {
-                return $u->to_array();
+            $dataArray = array_map(function ($u) use ($objCarona) {
+                $item = $u->to_array();
+                $item['carona'] = $objCarona['data'][0] ?? null;
+                return $item;
             }, $objetos);
 
             return [

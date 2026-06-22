@@ -1,3 +1,5 @@
+const user = JSON.parse(localStorage.getItem('user'));
+
 const pagesConfig = {
     'home': {
         title: 'Início',
@@ -123,6 +125,22 @@ const pagesConfig = {
     'carona-reserva-confirma': {
         title: 'Carona Confirmada!',
         onLoad: () => { loadPage('carona-reserva-confirma', 'components/Carona/carona_reserva_confirma.php', 'components/Carona/carona.js') }
+    },
+    'carona-reservada': {
+        title: 'Caronas Reservadas',
+        onLoad: async () => {
+            await loadPage('carona-reservada', 'components/Carona/carona_reservada.php', 'components/Carona/carona.js');
+            renderReservaTable({
+                entidade: 'Reserva',
+                tabelaId: 'carona-reservada-data-table',
+                colunas: ['id_carona', 'data_partida', 'hora_partida', 'endereco'],
+                actions: [
+                    { label: '✏️', title: 'Editar', onClick: loadData },
+                    { label: '❌', title: 'Remover', onClick: 'Carona.removeReserva' }
+                ],
+                user: user.id_usuario
+            });
+        }
     },
 
     // MARCAS
@@ -338,19 +356,65 @@ function maskMoney(e) {
 async function login(event) {
 
     event.preventDefault();
-    showLoading("Acessando...");
 
-    window.location.href = '/index2.php';
+    try {
+        showLoading("Acessando...");
+
+        const payload = {
+            user: document.getElementById('user').value,
+            pass: document.getElementById('pass').value
+        };
+
+        const response = await fetch('/app/Core/Router.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                co: btoa('Usuario_Control'),
+                ac: btoa('Usuario_Login'),
+                ...payload
+            })
+        });
+
+        const res = await response.json();
+
+        if (!res.success) {
+            showModalMessage(res.error || 'Login inválido');
+            return;
+        }
+        console.log(res);
+        if (res.success && res.data.data == null) {
+            showModalMessage(res.message || 'Login inválido');
+        } else {
+            // salva token ou sessão (se necessário)
+            localStorage.setItem('user', JSON.stringify(res.data.data));
+
+            window.location.href = '/index2.php';
+        }
+    } catch (err) {
+        showModalMessage('Erro inesperado');
+    } finally {
+        setTimeout(() => {
+            hideLoading();
+        }, 2000);
+    }
 }
 
-function renderTable({ entidade, tabelaId, colunas, actions = [] }) {
+function renderTable({ entidade, tabelaId, colunas, actions = [], user = null }) {
 
     const co = btoa(entidade + '_Control');
     const ac = btoa(entidade + '_Gerencia');
 
     showLoading('Carregando dados...');
 
-    fetch(`/app/Core/Router.php?co=${co}&ac=${ac}`)
+    const params = new URLSearchParams({ co, ac });
+
+    if (user) {
+        params.append('id_usuario', user);
+    }
+
+    fetch(`/app/Core/Router.php?${params.toString()}`)
         .then(response => response.json())
         .then(res => {
 
@@ -381,6 +445,92 @@ function renderTable({ entidade, tabelaId, colunas, actions = [] }) {
                 colunas.forEach(col => {
                     const td = document.createElement('td');
                     td.textContent = item[col] ?? '';
+                    tr.appendChild(td);
+                });
+
+                const tdActions = document.createElement('td');
+                const ul = document.createElement('ul');
+
+                actions.forEach(action => {
+                    const li = document.createElement('li');
+                    const btn = document.createElement('button');
+                    btn.title = action.title;
+                    btn.textContent = action.label;
+
+                    btn.addEventListener('click', () => {
+
+                        const fn =
+                            typeof action.onClick === 'string'
+                                ? action.onClick
+                                    .split('.')
+                                    .reduce((obj, key) => obj?.[key], window)
+                                : action.onClick;
+
+                        if (typeof fn !== 'function') {
+                            console.error('Função não encontrada:', action.onClick);
+                            return;
+                        }
+
+                        fn(co, ac, item[colunas[0]], colunas, tabelaId);
+                    });
+
+                    li.appendChild(btn);
+                    ul.appendChild(li);
+                });
+                tdActions.appendChild(ul);
+                tr.appendChild(tdActions);
+                tbody.appendChild(tr);
+
+            });
+        })
+        .catch(err => console.error(err))
+        .finally(() => hideLoading());
+}
+
+function renderReservaTable({ entidade, tabelaId, colunas, actions = [], user = null }) {
+
+    const co = btoa(entidade + '_Control');
+    const ac = btoa(entidade + '_Gerencia');
+
+    showLoading('Carregando dados...');
+
+    const params = new URLSearchParams({ co, ac });
+
+    if (user) {
+        params.append('id_usuario', user);
+    }
+
+    fetch(`/app/Core/Router.php?${params.toString()}`)
+        .then(response => response.json())
+        .then(res => {
+
+            if (!res.success) {
+                alert(res.error);
+                return;
+            }
+
+            const dados = res.data.data;
+            const tbody = document.getElementById(tabelaId);
+
+            tbody.innerHTML = '';
+
+            if (!dados || dados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="${colunas.length + 1}" style="text-align:center">
+                            Nenhum dado encontrado.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            dados.forEach(item => {
+                const tr = document.createElement('tr');
+
+                colunas.forEach(col => {
+                    const td = document.createElement('td');
+                    td.textContent = item.carona[col] ?? '';
                     tr.appendChild(td);
                 });
 

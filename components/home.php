@@ -16,4 +16,8 @@
 <div class="form-row">    
     <button class="btn-save" onclick="navigate('carona-search')">Buscar Caronas</button>
 </div>
+<br>
+<div class="form-row">    
+    <button class="btn-save" onclick="navigate('carona-reservada')">Caronas Reservadas</button>
+</div>
 

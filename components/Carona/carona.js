@@ -187,7 +187,7 @@ window.Carona = {
             // Sucesso        
             showModalMessage(res.data?.message || 'Carona solicitada com sucesso!');
 
-            navigate('carona-reserva-confirma');
+            navigate('carona-reservada');
 
         } catch (err) {
             showModalMessage('Erro inesperado');

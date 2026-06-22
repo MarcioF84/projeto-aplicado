@@ -143,6 +143,41 @@ class Usuario_Control extends Control
         }
     }
 
+    public function Usuario_Login()
+    {
+        $email = isset($this->post_request['user']) ? $this->post_request['user'] : null;
+        $senha = isset($this->post_request['pass']) ? $this->post_request['pass'] : null;
+        try {
+            //CONFIGURE A CONDIÇÃO DE BUSCA  
+            $condicao = " and status_usuario = 'A'";
+            $condicao .= " and email = '" . $email . "'";
+
+            $dataArray = $this->usuario_dao->load_data($condicao);
+
+            if ($senha == $dataArray['senha']) {
+
+                unset($dataArray['senha']);
+                unset($dataArray['sexo']);
+                unset($dataArray['data_criacao']);
+                unset($dataArray['status_usuario']);
+                return [
+                    "data" => $dataArray,
+                ];
+            } else {
+                return [
+                    "data" => null,
+                    "message" => "Usuário não encontrado."
+                ];
+            }
+        } catch (Exception $e) {
+
+            return [
+                "error" => true,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+
     public function Usuario_Desativar()
     {
 

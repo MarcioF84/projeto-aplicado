@@ -16,10 +16,10 @@
         <div class="nav-header">Meu App</div>
         <ul>
             <li><button onclick="navigate('home')"><i data-lucide="home"></i> Início</button></li>
-            <li><button onclick="navigate('usuario-list')"><i data-lucide="table"></i> Usuários</button></li>
-            <li><button onclick="navigate('tipo-usuario-list')"><i data-lucide="table"></i> Tipo de Usuário</button></li>
-            <li><button onclick="navigate('marca-list')"><i data-lucide="table"></i> Marcas</button></li>
-            <li><button onclick="navigate('modelo-list')"><i data-lucide="table"></i> Modelo</button></li>
+            <!-- <li><button onclick="navigate('usuario-list')"><i data-lucide="table"></i> Usuários</button></li> -->
+            <!-- <li><button onclick="navigate('tipo-usuario-list')"><i data-lucide="table"></i> Tipo de Usuário</button></li> -->
+            <!-- <li><button onclick="navigate('marca-list')"><i data-lucide="table"></i> Marcas</button></li> -->
+            <!-- <li><button onclick="navigate('modelo-list')"><i data-lucide="table"></i> Modelo</button></li> -->
         </ul>
     </nav>
 
@@ -56,10 +56,12 @@
             <!-- Página Carona -->
             <div id="carona-list" class="table-container page hidden"></div>
             <div id="carona-search" class="table-container page hidden"></div>
+            <div id="carona-reservada" class="table-container page hidden"></div>
             <div id="carona-add" class="card page hidden"></div>
             <div id="carona-alt" class="card page hidden"></div>
             <div id="carona-detail" class="card page hidden"></div>
             <div id="carona-reserva-confirma" class="card page hidden"></div>
+            
 
 
             <div id="modal" class="modal hidden">
@@ -74,8 +76,7 @@
     <script>
         window.onload = function() {
             // navigate('home');
-            navigate('carona-detail');
-            // navigate('carona-reserva-confirma');
+            navigate('carona-reservada');
             lucide.createIcons();
         };
     </script>
