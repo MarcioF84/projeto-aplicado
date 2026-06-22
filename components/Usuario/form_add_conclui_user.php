@@ -2,7 +2,7 @@
 <br>
 <br>
 <div class="form-group">
-    Seu cadastro foi feito com sucesso.
+    <p>Seu cadastro foi feito com sucesso.</p>
 </div>
 <br>
 <br>

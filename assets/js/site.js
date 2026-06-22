@@ -94,18 +94,35 @@ const pagesConfig = {
         }
     },
     'carona-search': {
-        title: 'Buscar Caronas',
+        title: 'Caronas Disponíveis',
         onLoad: async () => {
             await loadPage('carona-search', 'components/Carona/search_carona.php', 'components/Carona/carona.js');
             renderTable({
                 entidade: 'Carona',
-                tabelaId: 'carona-search-data-table',
+                tabelaId: 'carona-detail-data',
                 colunas: ['id_carona', 'motorista', 'data_partida', 'hora_partida', 'endereco'],
                 actions: [
                     { label: '✏️', title: 'Solicitar Carona', onClick: Carona.solicitarCarona }
                 ]
             });
         }
+    },
+    'carona-detail': {
+        title: 'Detalhes da Carona',
+        onLoad: async () => {
+            await loadPage('carona-detail', 'components/Carona/carona_detail.php', 'components/Carona/carona.js');
+            renderRideDetails({
+                entidade: 'Carona',
+                tabelaId: 'carona-search-data-table',
+                actions: [
+                    { label: '✏️', title: 'Confirmar Carona', onClick: Carona.confirmarCarona }
+                ]
+            });
+        }
+    },
+    'carona-reserva-confirma': {
+        title: 'Carona Confirmada!',
+        onLoad: () => { loadPage('carona-reserva-confirma', 'components/Carona/carona_reserva_confirma.php', 'components/Carona/carona.js') }
     },
 
     // MARCAS
@@ -175,7 +192,7 @@ function navigate(page) {
     const config = pagesConfig[page] || { title: 'Início' };
     const title = document.getElementById('page-title');
     if (title) title.innerText = config.title;
-    
+
     if (config.onLoad) {
         config.onLoad();
     }
@@ -299,9 +316,7 @@ function maskTime(e) {
 
 function maskPlaca(e) {
     let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-
     if (v.length > 7) v = v.slice(0, 7);
-
     // formato antigo ou Mercosul (não força hífen, só limpa)
     e.target.value = v;
 }
@@ -320,7 +335,13 @@ function maskMoney(e) {
     e.target.value = 'R$ ' + v;
 }
 
+async function login(event) {
 
+    event.preventDefault();
+    showLoading("Acessando...");
+
+    window.location.href = '/index2.php';
+}
 
 function renderTable({ entidade, tabelaId, colunas, actions = [] }) {
 
@@ -399,6 +420,67 @@ function renderTable({ entidade, tabelaId, colunas, actions = [] }) {
             });
         })
         .catch(err => console.error(err))
+        .finally(() => hideLoading());
+}
+
+function renderRideDetails({ entidade, caronaId = 1 }) {
+
+    const co = btoa(entidade + '_Control');
+    const ac = btoa(entidade + '_Gerencia');
+
+    showLoading('Carregando detalhes...');
+
+    fetch(`/app/Core/Router.php?co=${co}&ac=${ac}&id_carona=${caronaId}`)
+        .then(response => response.json())
+        .then(res => {
+            if (!res.success) {
+                alert(res.error);
+                return;
+            }
+
+            // Garante que pegamos o objeto correto do registro
+            const carona = Array.isArray(res.data.data) ? res.data.data[0] : res.data.data;
+
+            if (!carona) {
+                alert('Carona não encontrada.');
+                return;
+            }
+
+            const detalhe_carona_origem = `${carona.endereco_origem.rua}\n
+            ${carona.endereco_origem.bairro} - 
+            ${carona.endereco_origem.cidade}/
+            ${carona.endereco_origem.estado}\n
+            CEP: ${carona.endereco_origem.cep}`;
+
+            const detalhe_carona_destino = `${carona.endereco_destino.rua}\n
+            ${carona.endereco_destino.bairro} - 
+            ${carona.endereco_destino.cidade}/
+            ${carona.endereco_destino.estado}\n
+            CEP: ${carona.endereco_destino.cep}`;
+
+            // Atualização Direta e Segura dos Elementos (Sem innerHTML)
+            document.getElementById('id_usuario').value = 1 ?? '';
+            document.getElementById('id_frota').value = carona.frota.id_frota ?? '';
+            document.getElementById('data_reserva').value = carona.data_partida ?? '';
+            document.getElementById('detalhe-carona-data').textContent = carona.data_partida ?? '';
+            document.getElementById('detalhe-carona-hora').textContent = carona.hora_partida ?? '';
+            document.getElementById('detalhe-carona-origem').textContent = detalhe_carona_origem ?? '';
+            document.getElementById('detalhe-carona-destino').textContent = detalhe_carona_destino ?? '';
+            document.getElementById('detalhe-carona-motorista').textContent = carona.frota.motorista ?? '';
+
+            // Formatando o texto do veículo de forma limpa            
+            const frota = `${carona.frota.modelo.marca.descricao_marca} ${carona.frota.modelo.descricao_modelo} - 
+            ${carona.frota.cor} - Placa: ${carona.frota.placa}`;
+
+            document.getElementById('detalhe-carona-veiculo').textContent = frota ?? '';
+
+            // Atualização de atributos específicos (Imagens)
+            const fotoMotorista = document.getElementById('detalhe-carona-foto');
+            fotoMotorista.src = carona.motorista_foto || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150';
+            fotoMotorista.alt = carona.motorista_nome ?? 'Foto do motorista';
+
+        })
+        .catch(err => console.error('Erro na requisição:', err))
         .finally(() => hideLoading());
 }
 

@@ -21,9 +21,6 @@ class Endereco_Control extends Control
             
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_endereco = 'A'";
-            if (isset($this->post_request['id_endereco'])) {
-                $condicao .= "and id_endereco = " . $this->post_request['id_endereco'] . "";
-            }
             if ($busca != null) {
                 $condicao .= $busca;
             }

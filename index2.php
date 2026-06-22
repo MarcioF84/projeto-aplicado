@@ -58,6 +58,8 @@
             <div id="carona-search" class="table-container page hidden"></div>
             <div id="carona-add" class="card page hidden"></div>
             <div id="carona-alt" class="card page hidden"></div>
+            <div id="carona-detail" class="card page hidden"></div>
+            <div id="carona-reserva-confirma" class="card page hidden"></div>
 
 
             <div id="modal" class="modal hidden">
@@ -71,7 +73,9 @@
     <script src="assets/js/site.js" defer></script>
     <script>
         window.onload = function() {
-            navigator('home');
+            // navigate('home');
+            navigate('carona-detail');
+            // navigate('carona-reserva-confirma');
             lucide.createIcons();
         };
     </script>

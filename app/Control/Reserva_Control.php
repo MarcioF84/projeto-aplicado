@@ -71,7 +71,7 @@ class Reserva_Control extends Control
             $obj->set_id_usuario($this->post_request['id_usuario']);
             $obj->set_id_carona($this->post_request['id_carona']);
             $obj->set_qtde_assentos($this->post_request['qtde_assentos']);
-            $obj->set_data_reserva($this->post_request['data_reserva']);
+            $obj->set_data_reserva($this->data->get_formatData($this->post_request['data_reserva'], 'BD'));
             $obj->set_status_reserva("A");
 
             $id_reserva = $this->reserva_dao->Save($obj);

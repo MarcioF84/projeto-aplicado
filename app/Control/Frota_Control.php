@@ -8,23 +8,25 @@ class Frota_Control extends Control
 {
 
     private object $frota_dao;
+    private object $modelo_control;
+    private object $usuario_control;
 
     public function __construct(array $post_request)
     {
         $this->frota_dao = new Frota_DAO();
+        $this->modelo_control = new Modelo_Control($post_request);
+        $this->usuario_control = new Usuario_Control($post_request);
+
         parent::__construct($post_request, $this->frota_dao);
     }
 
-    public function Frota_Gerencia()
+    public function Frota_Gerencia($busca = null)
     {
         try {
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_frota = 'A'";
-            if (isset($this->post_request['id_frota'])) {
-                $condicao = "and id_frota = " . $this->post_request['id_frota'] . "";
-            }
-            if (isset($this->post_request['placa'])) {
-                $condicao = "and placa = '" . $this->post_request['placa'] . "'";
+            if ($busca != null) {
+                $condicao .= $busca;
             }
 
             //INICIALIZA A PÁGINA		
@@ -43,9 +45,14 @@ class Frota_Control extends Control
             $ordem = " id_frota asc";
 
             $objetos = $this->frota_dao->get_Objs($condicao, $ordem, $inicio, $pag_views);
+            $objModelo = $this->modelo_control->Modelo_Gerencia(" and id_modelo = " . $objetos[0]->get_id_modelo());
+            $objMotorista = $this->usuario_control->Usuario_Motorista(" and id_frota = " . $objetos[0]->get_id_frota());
 
-            $dataArray = array_map(function ($u) {
-                return $u->to_array();
+            $dataArray = array_map(function ($u) use ($objModelo, $objMotorista) {
+                $item = $u->to_array();
+                $item['motorista'] = $objMotorista['data']['nome'] ?? null;
+                $item['modelo'] = $objModelo['data'][0] ?? null;
+                return $item;
             }, $objetos);
 
             return [
@@ -103,7 +110,7 @@ class Frota_Control extends Control
             $obj->set_id_modelo($this->post_request['id_modelo']);
             $obj->set_placa($this->post_request['placa']);
             $obj->set_cor($this->post_request['cor']);
-        
+
             $this->frota_dao->Save($obj);
 
             return [

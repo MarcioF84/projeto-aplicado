@@ -25,7 +25,7 @@ window.Carona = {
         });
 
         return errors;
-    },    
+    },
 
     async saveNewData(event) {
         event.preventDefault();
@@ -152,9 +152,52 @@ window.Carona = {
             }, 2000);
         }
     },
-    async solicitarCarona(co, ac, id, colunas, tabelaId) {
 
+    async reservarCarona(event) {
+        event.preventDefault();
+
+        try {
+            showLoading('Salvando...');
+
+            const payload = {
+                co: btoa('Reserva_Control'),
+                ac: btoa('Reserva_Add'),
+                id_carona: document.getElementById('id_frota').value,
+                id_usuario: document.getElementById('id_usuario').value,
+                data_reserva: document.getElementById('data_reserva').value,
+                qtde_assentos: 1
+            };
+
+            // Requisição
+            const response = await fetch('/app/Core/Router.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const res = await response.json();
+
+            if (!res.success) {
+                showModalMessage(res.error || 'Erro ao salvar');
+                return;
+            }
+
+            // Sucesso        
+            showModalMessage(res.data?.message || 'Carona solicitada com sucesso!');
+
+            navigate('carona-reserva-confirma');
+
+        } catch (err) {
+            showModalMessage('Erro inesperado');
+        } finally {
+            setTimeout(() => {
+                hideLoading();
+            }, 2000);
+        }
     },
+
     async removeData(co, ac, id, colunas, tabelaId) {
 
         try {

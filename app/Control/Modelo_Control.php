@@ -8,22 +8,25 @@ class Modelo_Control extends Control
 {
 
     private object $modelo_dao;
+    private object $marca_control;
 
     public function __construct(array $post_request)
     {
         $this->modelo_dao = new Modelo_DAO();
+        $this->marca_control = new Marca_Control($post_request);
+
         parent::__construct($post_request, $this->modelo_dao);
     }
 
-    public function Modelo_Gerencia()
+    public function Modelo_Gerencia($busca = null)
     {
         try {
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_modelo = 'A'";
-            if (isset($this->post_request['id_modelo'])) {
-                $condicao = "and id_modelo = " . $this->post_request['id_modelo'] . "";
+            if ($busca != null) {
+                $condicao .= $busca;
             }
-
+            
             //INICIALIZA A PÁGINA		
             $pagina = isset($this->post_request['pagina']) && $this->post_request['pagina'] > 0 ? $this->post_request['pagina'] : 1;
 
@@ -40,13 +43,12 @@ class Modelo_Control extends Control
             $ordem = " descricao_modelo asc";
 
             $objetos = $this->modelo_dao->get_Objs($condicao, $ordem, $inicio, $pag_views);
-            $descricoes = $this->modelo_dao->get_Descricoes();
+            $objMarca = $this->marca_control->Marca_Gerencia(" and id_marca = " . $objetos[0]->get_id_marca());
 
-            $dataArray = array_map(function ($u)  use ($descricoes) {
-                $item = $u->to_array();                
-                $item['descricao_marca'] = $descricoes[$item['id_marca']] ?? null;
+            $dataArray = array_map(function ($u) use ($objMarca) {
+                $item = $u->to_array();
+                $item['marca'] = $objMarca['data'][0] ?? null;
                 return $item;
-
             }, $objetos);
 
             return [

@@ -20,13 +20,13 @@ class Carona_Control extends Control
         parent::__construct($post_request, $this->carona_dao);
     }
 
-    public function Carona_Gerencia()
+    public function Carona_Gerencia($busca = null)
     {
         try {
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_carona = 'A'";
-            if (isset($this->post_request['id_carona'])) {
-                $condicao = "and id_carona = " . $this->post_request['id_carona'] . "";
+            if ($busca != null) {
+                $condicao .= $busca;
             }
 
             //INICIALIZA A PÁGINA		
@@ -45,16 +45,28 @@ class Carona_Control extends Control
             $ordem = " id_carona asc";
 
             $objetos = $this->carona_dao->get_Objs($condicao, $ordem, $inicio, $pag_views);
-            $objEndereco = $this->endereco_control->Endereco_Gerencia($objetos[0]->get_id_endereco_origem());
-            $objFrota = $this->frota_control->Frota_Gerencia($objetos[0]->get_id_frota());
+            $objEnderecoOrigem = $this->endereco_control->Endereco_Gerencia(" and id_endereco = " . $objetos[0]->get_id_endereco_origem());
+            $objEnderecoDestino = $this->endereco_control->Endereco_Gerencia(" and id_endereco = " . $objetos[0]->get_id_endereco_destino());
+            $objFrota = $this->frota_control->Frota_Gerencia(" and id_frota = " . $objetos[0]->get_id_frota());
 
+            $dataArray = array_map(function ($u) use ($objEnderecoOrigem, $objEnderecoDestino, $objFrota) {
 
-            $dataArray = array_map(function ($u)  use ($objEndereco) {
-                $endereco = $objEndereco['data'][0]['cep'] . " - " . $objEndereco['data'][0]['rua'] . " - 
-                " . $objEndereco['data'][0]['cidade'] . " / 
-                " . $objEndereco['data'][0]['estado'];
                 $item = $u->to_array();
-                $item['endereco'] = $endereco ?? null;
+
+                $origem = $objEnderecoOrigem['data'][0] ?? null;
+                $destino = $objEnderecoDestino['data'][0] ?? null;
+                $frota = $objFrota['data'][0] ?? null;
+
+                $endereco = null;
+                if ($origem) {
+                    $endereco = $origem['cep'] . " - " . $origem['rua'] . " - " . $origem['cidade'] . " / " . $origem['estado'];
+                }
+
+                $item['endereco'] = $endereco;
+                $item['frota'] = $frota;
+                $item['endereco_origem'] = $origem;
+                $item['endereco_destino'] = $destino;
+
                 return $item;
             }, $objetos);
 

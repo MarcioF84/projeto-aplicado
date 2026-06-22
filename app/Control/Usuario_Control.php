@@ -15,13 +15,13 @@ class Usuario_Control extends Control
         parent::__construct($post_request, $this->usuario_dao);
     }
 
-    public function Usuario_Gerencia()
+    public function Usuario_Gerencia($busca = null)
     {
         try {
             //CONFIGURE A CONDIÇÃO DE BUSCA  
             $condicao = " and status_usuario = 'A'";
-            if (isset($this->post_request['id_usuario'])) {
-                $condicao = "and id_usuario = " . $this->post_request['id_usuario'] . "";
+            if ($busca != null) {
+                $condicao .= $busca;
             }
 
             //INICIALIZA A PÁGINA		
@@ -53,6 +53,29 @@ class Usuario_Control extends Control
                     "total_registros" => $total_reg,
                     "total_paginas" => ceil($total_reg / $pag_views)
                 ]
+            ];
+        } catch (Exception $e) {
+
+            return [
+                "error" => true,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+
+    public function Usuario_Motorista($busca = null)
+    {
+        try {
+            //CONFIGURE A CONDIÇÃO DE BUSCA  
+            $condicao = " and status_usuario = 'A'";
+            if ($busca != null) {
+                $condicao .= $busca;
+            }
+
+            $dataArray = $this->usuario_dao->load_data($condicao);
+
+            return [
+                "data" => $dataArray,
             ];
         } catch (Exception $e) {
 
